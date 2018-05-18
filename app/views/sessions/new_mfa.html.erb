@@ -1,0 +1,12 @@
+<h1>Login - MFA</h1>
+
+<%= form_with(local: true, url: sessions_path) do |form| %>
+  <div class="field">
+    <%= form.label :token %>
+    <%= form.text_field :token %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit 'Login' %>
+  </div>
+<% end %>

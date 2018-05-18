@@ -1,0 +1,29 @@
+<p>
+  <strong>Name:</strong>
+  <%= @user.name %>
+</p>
+
+<% if @user.has_mfa? %>
+  <p>
+    <strong>Mfa secret:</strong>
+    <%= @user.mfa_secret %>
+  </p>
+
+  <p>
+    <strong>Mfa provisioning URL:</strong>
+    <%= @user.mfa_url %>
+  </p>
+
+  <p>
+    <strong>Mfa QR Code:</strong>
+    <%= user_mfa_qrcode(@user) %>
+  </p>
+<% end %>
+
+<% if @user.has_mfa? %>
+  <%= link_to 'Remove MFA token', user_mfa_path(@user), method: :delete %>
+<% else %>
+  <%= link_to 'Create MFA token', user_mfa_path(@user), method: :post %>
+<% end %>
+<%= link_to 'Edit', edit_user_path(@user) %> |
+<%= link_to 'Back', users_path %>

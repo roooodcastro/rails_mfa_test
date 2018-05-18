@@ -1,0 +1,17 @@
+<h1>Login</h1>
+
+<%= form_with(model: User.new, local: true, url: new_mfa_sessions_path) do |form| %>
+  <div class="field">
+    <%= form.label :name %>
+    <%= form.text_field :name %>
+  </div>
+
+  <div class="field">
+    <%= form.label :password %>
+    <%= form.password_field :password %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit 'Login' %>
+  </div>
+<% end %>

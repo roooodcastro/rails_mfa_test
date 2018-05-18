@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>MfaTest</title>
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+</head>
+
+<body>
+<% if current_user.present? %>
+  <h2>You are logged on, <%= current_user.name %>!</h2>
+  <%= link_to 'Log out', sessions_path, method: :delete %>
+<% else %>
+  <%= link_to 'Log in', new_session_path %>
+<% end %>
+
+<hr />
+
+<p id="notice"><%= notice %></p>
+<p id="alert"><%= alert %></p>
+<%= yield %>
+</body>
+</html>
