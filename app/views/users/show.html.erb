@@ -1,29 +1,32 @@
-<p>
-  <strong>Name:</strong>
-  <%= @user.name %>
-</p>
+<h1>User "<%= @user.name %>"</h1>
 
 <% if @user.has_mfa? %>
-  <p>
-    <strong>Mfa secret:</strong>
-    <%= @user.mfa_secret %>
-  </p>
-
-  <p>
-    <strong>Mfa provisioning URL:</strong>
-    <%= @user.mfa_url %>
-  </p>
-
-  <p>
-    <strong>Mfa QR Code:</strong>
-    <%= user_mfa_qrcode(@user) %>
-  </p>
+  <div class="card mb-3">
+    <div class="card-header">
+      <h3 class="card-title mb-0">MFA Info</h3>
+    </div>
+    <div class="card-body">
+      <dl class="row">
+        <dt class="col-3">MFA Secret</dt>
+        <dd class="col-9"><%= @user.mfa_secret %></dd>
+        <dt class="col-3">MFA Provisioning URL</dt>
+        <dd class="col-9"><%= @user.mfa_url %></dd>
+      </dl>
+    </div>
+    <div class="card-body text-center">
+      <h4>Scan this QR Code</h4>
+      <%= user_mfa_qrcode(@user) %>
+    </div>
+  </div>
 <% end %>
 
-<% if @user.has_mfa? %>
-  <%= link_to 'Remove MFA token', user_mfa_path(@user), method: :delete %>
-<% else %>
-  <%= link_to 'Create MFA token', user_mfa_path(@user), method: :post %>
-<% end %>
-<%= link_to 'Edit', edit_user_path(@user) %> |
-<%= link_to 'Back', users_path %>
+<div class="card card-body d-block">
+  <% if @user.has_mfa? %>
+    <%= link_to 'Remove MFA token', user_mfa_path(@user), method: :delete, class: 'btn btn-danger' %>
+  <% else %>
+    <%= link_to 'Create MFA token', user_mfa_path(@user), method: :post, class: 'btn btn-primary' %>
+  <% end %>
+
+  <%= link_to 'Edit', edit_user_path(@user), class: 'btn btn-success' %>
+  <%= link_to 'Back', users_path, class: 'btn btn-secondary' %>
+</div>

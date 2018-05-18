@@ -5,6 +5,7 @@ ruby '2.5.1'
 
 gem 'base32'
 gem 'bcrypt', '~> 3.1.7'
+gem 'bootstrap'
 gem 'puma', '~> 3.11'
 gem 'rails', '~> 5.2.0'
 gem 'rotp'
