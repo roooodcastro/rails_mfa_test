@@ -21,9 +21,4 @@ test:
   database: db/test.sqlite3
 
 production:
-  adapter: postgresql
-  encoding: unicode
-  database: mfa_test_prod
-  pool: 5
-  username: <%= ENV['DB_USER'] %>
-  password: <%= ENV['DB_PASS'] %>
+  url: <%= ENV['DATABASE_URL'] %>
