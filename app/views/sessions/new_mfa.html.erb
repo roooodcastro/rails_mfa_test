@@ -1,12 +1,20 @@
-<h1>Login - MFA</h1>
-
 <%= form_with(local: true, url: sessions_path) do |form| %>
-  <div class="field">
-    <%= form.label :token %>
-    <%= form.text_field :token %>
-  </div>
-
-  <div class="actions">
-    <%= form.submit 'Login' %>
+  <div class="card">
+    <div class="card-header"><h3 class="card-title my-0">Login - MFA</h3></div>
+    <div class="card-body">
+      <div class="form-group">
+        <%= form.label :token %>
+        <%= form.text_field :token, class: 'form-control',
+                            placeholder: 'ex: 123456' %>
+        <small class="form-text text-muted">
+          Enter the code that appears on your MFA device
+        </small>
+      </div>
+    </div>
+    <div class="card-footer">
+      <%= form.submit 'Login', class: 'btn btn-primary' %>
+      <%= link_to 'Log in as another user', new_session_path,
+                  class: 'btn btn-secondary' %>
+    </div>
   </div>
 <% end %>

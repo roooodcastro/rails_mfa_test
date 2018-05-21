@@ -1,7 +1,7 @@
-
-
 class User < ApplicationRecord
   has_secure_password
+
+  has_many :nonce_tokens
 
   validates :name, presence: true
   validates :password, presence: true, on: :create
@@ -11,11 +11,17 @@ class User < ApplicationRecord
   end
 
   def generate_mfa_secret!
-    update!(mfa_secret: SecureRandom.hex(16))
+    transaction do
+      update!(mfa_secret: SecureRandom.hex(16))
+      Array.new(10) { nonce_tokens.build.save! }
+    end
   end
 
   def remove_mfa_secret!
-    update!(mfa_secret: nil)
+    transaction do
+      update!(mfa_secret: nil)
+      nonce_tokens.each { |token| token.destroy! }
+    end
   end
 
   def mfa_url
@@ -23,8 +29,12 @@ class User < ApplicationRecord
     totp.provisioning_uri(name)
   end
 
+  # First tries to log in using the time-based MFA device (mobile phone). If
+  # this fails, tries to authenticate using one of the user's nonce tokens,
+  # invalidating it.
   def authenticate_mfa(token)
     return false unless has_mfa? && token.present?
-    ROTP::TOTP.new(Base32.encode(mfa_secret)).verify(token)
+    return true if ROTP::TOTP.new(Base32.encode(mfa_secret)).verify(token)
+    NonceToken.authenticate(self, token)
   end
 end

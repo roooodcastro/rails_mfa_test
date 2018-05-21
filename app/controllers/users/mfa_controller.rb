@@ -3,11 +3,13 @@ class Users::MfaController < ApplicationController
 
   def create
     @user.generate_mfa_secret!
+    flash[:notice] = '2FA credentials have been created for you!'
     redirect_to @user
   end
 
   def destroy
     @user.remove_mfa_secret!
+    flash[:notice] = 'You are no longer using 2FA!'
     redirect_to @user
   end
 

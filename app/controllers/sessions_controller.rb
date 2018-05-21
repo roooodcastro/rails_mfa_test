@@ -8,8 +8,8 @@ class SessionsController < ApplicationController
       session[:mfa_authenticated] = !user.has_mfa?
       redirect_to root_path unless user.has_mfa?
     else
-      flash.now.alert = 'Email or password is invalid'
-      render :new
+      flash.alert = 'Email or password is invalid'
+      redirect_to new_session_path
     end
   end
 
@@ -17,6 +17,7 @@ class SessionsController < ApplicationController
     user = User.find(session[:user_id])
     if user && user.authenticate_mfa(params[:token])
       session[:mfa_authenticated] = true
+      flash[:notice] = 'You are now logged in!'
       return redirect_to root_path
     end
     flash.now.alert = 'MFA token is invalid'
