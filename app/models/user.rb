@@ -1,7 +1,7 @@
 class User < ApplicationRecord
   has_secure_password
 
-  has_many :nonce_tokens
+  has_many :nonce_tokens, dependent: :destroy
 
   validates :name, presence: true
   validates :password, presence: true, on: :create

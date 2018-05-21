@@ -3,14 +3,17 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '2.5.1'
 
+# Gems needed for the 2FA functionality
 gem 'base32'
+gem 'rotp'
+gem 'rqrcode'
+
+# Other Rails gems
 gem 'bcrypt', '~> 3.1.7'
 gem 'bootstrap'
 gem 'jquery-rails'
 gem 'puma', '~> 3.11'
 gem 'rails', '~> 5.2.0'
-gem 'rotp'
-gem 'rqrcode'
 gem 'sass-rails', '~> 5.0'
 gem 'sqlite3'
 gem 'turbolinks', '~> 5'
