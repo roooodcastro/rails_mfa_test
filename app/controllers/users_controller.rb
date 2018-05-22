@@ -1,15 +1,15 @@
 class UsersController < ApplicationController
-  before_action :login_required, except: [:index, :new, :create]
-  before_action :set_user, only: [:show, :edit, :update, :destroy]
-  before_action :verify_same_user, only: [:show, :edit, :update, :destroy]
+  before_action :login_required, except: %i[index new create]
+  before_action :set_user, only: %i[show edit update destroy]
+  before_action :verify_same_user, only: %i[show edit update destroy]
 
   # GET /users
   def index
-    if @user&.admin?
-      @users = User.all
-    else
-      @users = User.where(id: session[:user_id])
-    end
+    @users = if current_user&.admin?
+               User.all
+             else
+               User.where(id: session[:user_id])
+             end
   end
 
   # GET /users/1
@@ -49,7 +49,7 @@ class UsersController < ApplicationController
   def destroy
     @user.destroy
     session[:user_id] = nil
-    redirect_to users_url, notice: 'Your user was successfully destroyed!'
+    redirect_to users_url, notice: 'User was successfully destroyed.'
   end
 
   private

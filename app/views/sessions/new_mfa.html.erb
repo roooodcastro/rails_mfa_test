@@ -11,7 +11,7 @@
         </small>
       </div>
 
-      <% if @user.has_mfa? %>
+      <% if @user.mfa? %>
         <h4>Scan this QR Code to get the MFA token</h4>
         <%= user_mfa_qrcode(@user) %>
         <small class="text-muted d-block">

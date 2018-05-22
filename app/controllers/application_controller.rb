@@ -14,6 +14,9 @@ class ApplicationController < ActionController::Base
 
   private
 
+  # Can be used with "before_action" as a crude authorization feature, where
+  # it will redirect to the login page is the user tries to access an action
+  # without being logged on.
   def login_required
     return if logged_on?
     flash[:error] = 'This action requires login'

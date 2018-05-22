@@ -1,6 +1,6 @@
 <h1>User "<%= @user.name %>"</h1>
 
-<% if @user.has_mfa? %>
+<% if @user.mfa? %>
   <div class="card mb-3">
     <div class="card-header">
       <h3 class="card-title mb-0">MFA Info</h3>
@@ -10,7 +10,7 @@
         <dt class="col-3">MFA Secret</dt>
         <dd class="col-9"><%= @user.mfa_secret %></dd>
         <dt class="col-3">MFA Provisioning URL</dt>
-        <dd class="col-9"><%= @user.mfa_url %></dd>
+        <dd class="col-9"><%= @user.mfa_uri %></dd>
       </dl>
     </div>
     <div class="card-body">
@@ -40,7 +40,7 @@
 <% end %>
 
 <div class="card card-body d-block">
-  <% if @user.has_mfa? %>
+  <% if @user.mfa? %>
     <%= link_to 'Remove MFA token', user_mfa_path(@user), method: :delete,
                 class: 'btn btn-warning' %>
   <% else %>

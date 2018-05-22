@@ -30,7 +30,7 @@ module BootstrapFlashHelper
   def bootstrap_alert_close_button
     span = content_tag('span', '×', aria: { hidden: true })
     button_tag(span, class: 'close', data: { dismiss: 'alert' },
-               aria: { label: 'Close' })
+                     aria: { label: 'Close' })
   end
 
   def bootstrap_success_alert
