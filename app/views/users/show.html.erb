@@ -42,12 +42,14 @@
 <div class="card card-body d-block">
   <% if @user.has_mfa? %>
     <%= link_to 'Remove MFA token', user_mfa_path(@user), method: :delete,
-                class: 'btn btn-danger' %>
+                class: 'btn btn-warning' %>
   <% else %>
     <%= link_to 'Create MFA token', user_mfa_path(@user), method: :post,
                 class: 'btn btn-primary' %>
   <% end %>
 
-  <%= link_to 'Edit', edit_user_path(@user), class: 'btn btn-success' %>
   <%= link_to 'Back', users_path, class: 'btn btn-secondary' %>
+  <%= link_to 'Edit', edit_user_path(@user), class: 'btn btn-success' %>
+  <%= link_to 'Destroy', @user, method: :delete,
+              data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
 </div>

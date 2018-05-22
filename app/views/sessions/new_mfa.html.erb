@@ -10,6 +10,14 @@
           Enter the code that appears on your MFA device
         </small>
       </div>
+
+      <% if @user.has_mfa? %>
+        <h4>Scan this QR Code to get the MFA token</h4>
+        <%= user_mfa_qrcode(@user) %>
+        <small class="text-muted d-block">
+          (This is only for testing purposes)
+        </small>
+      <% end %>
     </div>
     <div class="card-footer">
       <%= form.submit 'Login', class: 'btn btn-primary' %>

@@ -3,8 +3,13 @@ class User < ApplicationRecord
 
   has_many :nonce_tokens, dependent: :destroy
 
-  validates :name, presence: true
+  validates :name, presence: true, uniqueness: true
   validates :password, presence: true, on: :create
+
+  # Hack, don't do this in production!
+  def admin?
+    name == 'admin'
+  end
 
   def has_mfa?
     mfa_secret.present?

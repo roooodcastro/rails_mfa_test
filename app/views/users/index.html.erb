@@ -1,32 +1,31 @@
 <h1>Users</h1>
 
-<table class="table table-bordered table-hover">
-  <thead>
-  <tr>
-    <th>Name</th>
-    <th>Using 2FA?</th>
-    <th>Actions</th>
-  </tr>
-  </thead>
-
-  <tbody>
-  <% @users.each do |user| %>
+<% if @users.present? %>
+  <table class="table table-bordered table-hover">
+    <thead>
     <tr>
-      <td><%= user.name %></td>
-      <td><%= user.mfa_secret.present? %></td>
-      <td>
-        <div class="btn-group">
-          <%= link_to 'Show', user, class: 'btn btn-sm btn-secondary' %>
-          <%= link_to 'Edit', edit_user_path(user), class: 'btn btn-sm btn-success' %>
-          <%= link_to 'Destroy', user, method: :delete,
-                      data: { confirm: 'Are you sure?' }, class: 'btn btn-sm btn-danger' %>
-        </div>
-      </td>
+      <th>Name</th>
+      <th>Using 2FA?</th>
     </tr>
-  <% end %>
-  </tbody>
-</table>
+    </thead>
 
-<div class="card card-body d-block">
-  <%= link_to 'New User', new_user_path, class: 'btn btn-primary' %>
-</div>
+    <tbody>
+    <% @users.each do |user| %>
+      <tr>
+        <td><%= link_to user.name, user %></td>
+        <td><%= user.mfa_secret.present? %></td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <div class="alert alert-warning">
+    No users found!
+  </div>
+<% end %>
+
+<% if current_user&.admin? %>
+  <div class="card card-body d-block">
+    <%= link_to 'New User', new_user_path, class: 'btn btn-primary' %>
+  </div>
+<% end %>

@@ -1,14 +1,19 @@
 class UsersController < ApplicationController
+  before_action :login_required, except: [:index, :new, :create]
   before_action :set_user, only: [:show, :edit, :update, :destroy]
+  before_action :verify_same_user, only: [:show, :edit, :update, :destroy]
 
   # GET /users
   def index
-    @users = User.all
+    if @user&.admin?
+      @users = User.all
+    else
+      @users = User.where(id: session[:user_id])
+    end
   end
 
   # GET /users/1
-  def show
-  end
+  def show; end
 
   # GET /users/new
   def new
@@ -16,14 +21,15 @@ class UsersController < ApplicationController
   end
 
   # GET /users/1/edit
-  def edit
-  end
+  def edit; end
 
   # POST /users
   def create
     @user = User.new(user_params)
 
     if @user.save
+      session[:user_id] = @user.id
+      session[:mfa_authenticated] = true
       redirect_to @user, notice: 'User was successfully created.'
     else
       render :new
@@ -42,17 +48,25 @@ class UsersController < ApplicationController
   # DELETE /users/1
   def destroy
     @user.destroy
-    redirect_to users_url, notice: 'User was successfully destroyed.'
+    session[:user_id] = nil
+    redirect_to users_url, notice: 'Your user was successfully destroyed!'
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_user
-      @user = User.find(params[:id])
-    end
 
-    # Only allow a trusted parameter "white list" through.
-    def user_params
-      params.require(:users).permit(:name, :password)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_user
+    @user = User.find(params[:id])
+  end
+
+  # Only allow a trusted parameter "white list" through.
+  def user_params
+    params.require(:user).permit(:name, :password)
+  end
+
+  # Can only see and change its own user, except if it's admin
+  def verify_same_user
+    return if @user&.admin?
+    redirect_to users_path unless @user&.id == session[:user_id]
+  end
 end

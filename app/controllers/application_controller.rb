@@ -11,4 +11,12 @@ class ApplicationController < ActionController::Base
   def logged_on?
     session[:user_id] && session[:mfa_authenticated]
   end
+
+  private
+
+  def login_required
+    return if logged_on?
+    flash[:error] = 'This action requires login'
+    redirect_to new_session_path
+  end
 end
